@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduTrack - Takip Sistemi</title>
+    <title>EduTrack v2 - Takip Sistemi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #0f172a; --card: #1e293b; --primary: #6366f1; --text: #f8fafc; --accent: #10b981; }
@@ -13,48 +13,49 @@
         .card { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid #334155; margin-bottom: 1rem; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
         
-        /* Net Hesaplama Formu */
+        /* Net Hesaplama Formu Tasarımı */
         .input-group { margin-bottom: 10px; }
         label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 5px; }
-        input { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        .net-box { background: var(--primary); color: white; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 10px; }
+        input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        .net-box { background: var(--primary); color: white; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; font-size: 1.2rem; }
         
-        .btn { padding: 10px 20px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; }
+        .btn { padding: 12px 20px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; transition: 0.2s; }
         .btn-primary { background: var(--primary); color: white; width: 100%; }
+        .btn:hover { opacity: 0.9; transform: scale(0.98); }
         .hidden { display: none !important; }
         
         /* Modal */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: var(--card); padding: 30px; border-radius: 20px; text-align: center; border: 2px solid var(--primary); }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card); padding: 30px; border-radius: 24px; text-align: center; border: 2px solid var(--primary); width: 90%; max-width: 400px; }
     </style>
 </head>
 <body>
 
 <nav>
-    <div style="font-weight: 800; color: var(--primary);">EduTrack</div>
+    <div style="font-weight: 800; color: var(--primary); font-size: 1.4rem;">EduTrack</div>
     <button id="login-btn" class="btn" style="background:white; color:black;">Google ile Giriş</button>
-    <button id="logout-btn" class="btn hidden" style="background:red; color:white;">Çıkış</button>
+    <button id="logout-btn" class="btn hidden" style="background:#ef4444; color:white;">Çıkış Yap</button>
 </nav>
 
 <div class="container">
-    <h1 id="user-name">Hoş Geldin!</h1>
+    <h1 id="user-name" style="text-align: center;">Yükleniyor...</h1>
     
     <div id="student-panel" class="hidden">
         <div class="grid">
             <div class="card">
-                <h3>📊 Günlük Soru Girişi</h3>
+                <h3>📝 Günlük Soru Girişi</h3>
                 <div class="input-group">
-                    <label>Ders Seçin</label>
-                    <input type="text" id="lesson" placeholder="Örn: Türkçe">
+                    <label>Ders Adı</label>
+                    <input type="text" id="lesson" placeholder="Örn: Türkçe, Matematik">
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <div class="input-group">
+                    <div class="input-group" style="flex: 1;">
                         <label>Doğru</label>
-                        <input type="number" id="correct" oninput="calcNet()">
+                        <input type="number" id="correct" oninput="calcNet()" placeholder="0">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" style="flex: 1;">
                         <label>Yanlış</label>
-                        <input type="number" id="wrong" oninput="calcNet()">
+                        <input type="number" id="wrong" oninput="calcNet()" placeholder="0">
                     </div>
                 </div>
                 <div id="net-result" class="net-box">Net: 0.00</div>
@@ -63,27 +64,29 @@
 
             <div class="card">
                 <h3>📚 Diğer Aktiviteler</h3>
-                <textarea id="other-act" style="width:100%; height:100px; background:#0f172a; color:white; border-radius:8px; border:1px solid #334155;" placeholder="Kitap okudum, özet çıkardım..."></textarea>
-                <button class="btn btn-primary" style="margin-top: 10px; background:var(--accent);" onclick="saveOther()">Kaydet</button>
+                <label>Neler Yaptın?</label>
+                <textarea id="other-act" style="width:100%; height:120px; background:#0f172a; color:white; border-radius:8px; border:1px solid #334155; padding:10px; font-family:inherit;" placeholder="Kitap okudum (40 dk), konu anlatımı izledim..."></textarea>
+                <button class="btn btn-primary" style="margin-top: 10px; background:var(--accent);" onclick="saveOther()">Aktiviteyi Kaydet</button>
             </div>
         </div>
     </div>
 
     <div id="teacher-panel" class="hidden">
-        <div class="card">
-            <h2 style="color:var(--accent);">👨‍🏫 Öğretmen Kontrol Merkezi</h2>
-            <p>Öğrencilerinizin verileri burada listelenecek.</p>
-            <input type="text" placeholder="Öğrenci ismi ara..." style="margin-bottom: 20px;">
-            <div id="student-list">Yükleniyor...</div>
+        <div class="card" style="border-left: 5px solid var(--accent);">
+            <h2 style="color:var(--accent);">👨‍🏫 Öğretmen Paneli</h2>
+            <p>Öğrencilerinizin verilerini aşağıdan filtreleyerek kontrol edebilirsiniz.</p>
+            <input type="text" placeholder="Öğrenci adı veya sınıf ara..." style="margin-bottom: 20px;">
+            <div id="student-list" style="color:#94a3b8;">Henüz veri girişi yapan öğrenci bulunamadı.</div>
         </div>
     </div>
 </div>
 
 <div id="role-modal" class="modal hidden">
     <div class="modal-content">
-        <h2>Türünüzü Seçin</h2>
-        <button onclick="saveRole('student')" class="btn btn-primary" style="margin-bottom:10px;">Ben Öğrenciyim</button><br>
-        <button onclick="saveRole('teacher')" class="btn btn-primary" style="background:var(--accent);">Ben Öğretmenim</button>
+        <h2>Hoş Geldin!</h2>
+        <p>Lütfen hesap türünü seçerek devam et:</p>
+        <button onclick="saveRole('student')" class="btn btn-primary" style="margin-bottom:12px;">👨‍🎓 Ben Öğrenciyim</button>
+        <button onclick="saveRole('teacher')" class="btn btn-primary" style="background:var(--accent);">👨‍🏫 Ben Öğretmenim</button>
     </div>
 </div>
 
@@ -92,7 +95,7 @@
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // Senin Config Bilgilerin (image_cea2a4.png'den aldım)
+    // Senin image_cea2a4.png'deki Config Bilgilerin
     const firebaseConfig = {
         apiKey: "AIzaSyCeGIZIVOdRrPnZiHMpiE8LnW-aiCAW85c",
         authDomain: "odev-sistemi-109f7.firebaseapp.com",
@@ -108,56 +111,65 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // Giriş
-    document.getElementById('login-btn').onclick = () => signInWithPopup(auth, provider);
+    // Giriş ve Çıkış
+    document.getElementById('login-btn').onclick = () => signInWithPopup(auth, provider).catch(err => alert("Hata: " + err.message));
     document.getElementById('logout-btn').onclick = () => signOut(auth).then(() => location.reload());
 
-    // Otomatik Net Hesaplama (JavaScript)
+    // Net Hesaplama Mantığı (4 Yanlış 1 Doğruyu Götürür)
     window.calcNet = () => {
         let d = parseFloat(document.getElementById('correct').value) || 0;
         let y = parseFloat(document.getElementById('wrong').value) || 0;
         let net = d - (y * 0.25);
-        document.getElementById('net-result').innerText = "Net: " + net.toFixed(2);
+        document.getElementById('net-result').innerText = "Net: " + (net < 0 ? 0 : net).toFixed(2);
     };
 
+    // Oturum Takibi
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             document.getElementById('login-btn').classList.add('hidden');
             document.getElementById('logout-btn').classList.remove('hidden');
-            const docSnap = await getDoc(doc(db, "users", user.uid));
+            const userRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(userRef);
+
             if (docSnap.exists()) {
-                let role = docSnap.data().role;
-                document.getElementById('user-name').innerText = "Merhaba, " + user.displayName;
+                const role = docSnap.data().role;
+                document.getElementById('user-name').innerText = `Merhaba, ${user.displayName} 👋`;
                 if(role === 'student') document.getElementById('student-panel').classList.remove('hidden');
                 else document.getElementById('teacher-panel').classList.remove('hidden');
             } else {
                 document.getElementById('role-modal').classList.remove('hidden');
             }
+        } else {
+            document.getElementById('user-name').innerText = "Lütfen Giriş Yapın";
         }
     });
 
     window.saveRole = async (role) => {
         await setDoc(doc(db, "users", auth.currentUser.uid), {
             name: auth.currentUser.displayName,
+            email: auth.currentUser.email,
             role: role
         });
         location.reload();
     };
 
-    // Veri Kaydetme Fonksiyonu
     window.saveData = async () => {
-        let d = document.getElementById('correct').value;
-        let y = document.getElementById('wrong').value;
-        let net = d - (y * 0.25);
-        await addDoc(collection(db, "daily_stats"), {
+        const d = document.getElementById('correct').value;
+        const y = document.getElementById('wrong').value;
+        const lesson = document.getElementById('lesson').value;
+        if(!lesson || !d) return alert("Lütfen ders ve doğru sayısını girin!");
+
+        await addDoc(collection(db, "stats"), {
             uid: auth.currentUser.uid,
-            lesson: document.getElementById('lesson').value,
+            name: auth.currentUser.displayName,
+            lesson: lesson,
             correct: d,
             wrong: y,
-            net: net,
-            date: new Date().toLocaleDateString()
+            net: d - (y * 0.25),
+            date: new Date().toISOString()
         });
         alert("Başarıyla kaydedildi!");
+        document.getElementById('correct').value = ""; document.getElementById('wrong').value = "";
     };
 </script>
 </body>
