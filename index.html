@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğitim Takip Sistemi</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --bg: #f3f4f6;
+            --text: #1f2937;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        
+        /* Navbar */
+        nav { background: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .logo { font-weight: bold; color: var(--primary); font-size: 1.2rem; }
+        
+        /* Ana Konteyner */
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; text-align: center; }
+        
+        /* Hoşgeldin Kartı */
+        .welcome-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; }
+        
+        /* Buton Grubu */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .card { background: white; padding: 1.5rem; border-radius: 10px; border: 1px solid #e5e7eb; transition: transform 0.2s; cursor: pointer; text-decoration: none; color: inherit; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .card i { font-size: 2rem; display: block; margin-bottom: 1rem; }
+        
+        .btn-google { background: #db4437; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; display: inline-block; margin-top: 10px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">Öğretmen Bilgilendirme Sistemi</div>
+    <div id="user-info">Giriş Yapılmadı</div>
+</nav>
+
+<div class="container">
+    <div class="welcome-card">
+        <h1>Hoş Geldin! 👋</h1>
+        <p>Lütfen devam etmek için Google hesabınla giriş yap.</p>
+        <a href="#" class="btn-google">Google ile Giriş Yap</a>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>📝 Soru Girişi</h3>
+            <p>Günlük çözdüğün soru sayılarını ve netlerini buraya gir.</p>
+        </div>
+
+        <div class="card">
+            <h3>📚 Kitap & Etkinlik</h3>
+            <p>Okuduğun kitap sayfasını ve çalışma sürelerini kaydet.</p>
+        </div>
+
+        <div class="card" style="background-color: #f0fdf4;">
+            <h3>👨‍🏫 Öğretmen Paneli</h3>
+            <p>Öğrenci verilerini kontrol et ve filtreleme yap.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
