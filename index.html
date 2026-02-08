@@ -3,153 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduTrack - Öğretmen & Öğrenci Takip</title>
+    <title>EduTrack - Takip Sistemi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --primary: #6366f1;
-            --text: #f8fafc;
-            --accent: #10b981;
-            --danger: #ef4444;
-        }
-
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            margin: 0; 
-            min-height: 100vh;
-        }
-
-        /* Navbar */
-        nav { 
-            background: #1e293b; 
-            padding: 1rem 5%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 1px solid #334155;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo { font-weight: 800; color: var(--primary); font-size: 1.5rem; }
-
-        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
-
-        /* Kartlar */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-        .card { 
-            background: var(--card); 
-            padding: 2rem; 
-            border-radius: 16px; 
-            border: 1px solid #334155; 
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
-
-        /* Butonlar */
-        .btn { 
-            padding: 10px 20px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            border: none; 
-            font-weight: 600; 
-            transition: opacity 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-google { background: white; color: #0f172a; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-logout { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
-        .btn:hover { opacity: 0.9; }
-
-        /* Modallar */
-        .modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; 
-            backdrop-filter: blur(5px);
-        }
-        .modal-content { 
-            background: var(--card); padding: 40px; border-radius: 24px; text-align: center; 
-            border: 2px solid var(--primary); max-width: 400px; width: 90%;
-        }
-
+        :root { --bg: #0f172a; --card: #1e293b; --primary: #6366f1; --text: #f8fafc; --accent: #10b981; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; }
+        nav { background: #1e293b; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid #334155; margin-bottom: 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+        
+        /* Net Hesaplama Formu */
+        .input-group { margin-bottom: 10px; }
+        label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        .net-box { background: var(--primary); color: white; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 10px; }
+        
+        .btn { padding: 10px 20px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; }
         .hidden { display: none !important; }
         
-        h1 { font-weight: 800; font-size: 2rem; margin-bottom: 1rem; }
-        p { color: #94a3b8; line-height: 1.6; }
-        
-        .role-selection { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--card); padding: 30px; border-radius: 20px; text-align: center; border: 2px solid var(--primary); }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">EduTrack</div>
-    <div id="auth-controls">
-        <button id="login-btn" class="btn btn-google">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/pwa/google.svg" width="18">
-            Google ile Giriş
-        </button>
-        <button id="logout-btn" class="btn btn-logout hidden">Çıkış Yap</button>
-    </div>
+    <div style="font-weight: 800; color: var(--primary);">EduTrack</div>
+    <button id="login-btn" class="btn" style="background:white; color:black;">Google ile Giriş</button>
+    <button id="logout-btn" class="btn hidden" style="background:red; color:white;">Çıkış</button>
 </nav>
 
 <div class="container">
-    <div id="welcome-section">
-        <h1 id="user-greeting">Hoş Geldin! 👋</h1>
-        <p id="sub-text">Öğrenci takip sistemine erişmek için lütfen giriş yapın.</p>
-    </div>
+    <h1 id="user-name">Hoş Geldin!</h1>
+    
+    <div id="student-panel" class="hidden">
+        <div class="grid">
+            <div class="card">
+                <h3>📊 Günlük Soru Girişi</h3>
+                <div class="input-group">
+                    <label>Ders Seçin</label>
+                    <input type="text" id="lesson" placeholder="Örn: Türkçe">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="input-group">
+                        <label>Doğru</label>
+                        <input type="number" id="correct" oninput="calcNet()">
+                    </div>
+                    <div class="input-group">
+                        <label>Yanlış</label>
+                        <input type="number" id="wrong" oninput="calcNet()">
+                    </div>
+                </div>
+                <div id="net-result" class="net-box">Net: 0.00</div>
+                <button class="btn btn-primary" style="margin-top: 15px;" onclick="saveData()">Veriyi Kaydet</button>
+            </div>
 
-    <div id="guest-view" class="grid">
-        <div class="card" style="border-left: 4px solid var(--accent);">
-            <h3 style="color: var(--accent);">👨‍🏫 Öğretmen Girişi</h3>
-            <p>Sınıfınızı yönetmek ve öğrenci verilerini analiz etmek için giriş yapın.</p>
+            <div class="card">
+                <h3>📚 Diğer Aktiviteler</h3>
+                <textarea id="other-act" style="width:100%; height:100px; background:#0f172a; color:white; border-radius:8px; border:1px solid #334155;" placeholder="Kitap okudum, özet çıkardım..."></textarea>
+                <button class="btn btn-primary" style="margin-top: 10px; background:var(--accent);" onclick="saveOther()">Kaydet</button>
+            </div>
         </div>
     </div>
 
-    <div id="student-panel" class="grid hidden">
+    <div id="teacher-panel" class="hidden">
         <div class="card">
-            <h3>📝 Soru Girişi</h3>
-            <p>Bugün çözdüğün soruları sisteme işle, netlerini gör.</p>
-            <button class="btn btn-primary" style="margin-top: 10px;">Veri Gir</button>
-        </div>
-        <div class="card">
-            <h3>📚 Kitap & Aktivite</h3>
-            <p>Okuduğun sayfaları ve çalışma sürelerini kaydet.</p>
-            <button class="btn btn-primary" style="margin-top: 10px;">Not Ekle</button>
-        </div>
-    </div>
-
-    <div id="teacher-panel" class="grid hidden">
-        <div class="card" style="border-color: var(--accent);">
-            <h3 style="color: var(--accent);">📊 Öğrenci Listesi</h3>
-            <p>Tüm sınıfın günlük performansını buradan takip et.</p>
-            <button class="btn btn-primary" style="background: var(--accent); margin-top: 10px;">Listeyi Gör</button>
+            <h2 style="color:var(--accent);">👨‍🏫 Öğretmen Kontrol Merkezi</h2>
+            <p>Öğrencilerinizin verileri burada listelenecek.</p>
+            <input type="text" placeholder="Öğrenci ismi ara..." style="margin-bottom: 20px;">
+            <div id="student-list">Yükleniyor...</div>
         </div>
     </div>
 </div>
 
 <div id="role-modal" class="modal hidden">
     <div class="modal-content">
-        <h2>Aramıza Katıl!</h2>
-        <p>Lütfen devam etmek için hesabının türünü seç:</p>
-        <div class="role-selection">
-            <button onclick="setRole('student')" class="btn btn-primary">👨‍🎓 Ben Öğrenciyim</button>
-            <button onclick="setRole('teacher')" class="btn btn-primary" style="background: var(--accent);">👨‍🏫 Ben Öğretmenim</button>
-        </div>
+        <h2>Türünüzü Seçin</h2>
+        <button onclick="saveRole('student')" class="btn btn-primary" style="margin-bottom:10px;">Ben Öğrenciyim</button><br>
+        <button onclick="saveRole('teacher')" class="btn btn-primary" style="background:var(--accent);">Ben Öğretmenim</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // Senin Firebase Config Bilgilerin
+    // Senin Config Bilgilerin (image_cea2a4.png'den aldım)
     const firebaseConfig = {
         apiKey: "AIzaSyCeGIZIVOdRrPnZiHMpiE8LnW-aiCAW85c",
         authDomain: "odev-sistemi-109f7.firebaseapp.com",
@@ -165,86 +108,57 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // Giriş Butonu Tıklama
-    document.getElementById('login-btn').onclick = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            checkUserRole(result.user);
-        } catch (error) {
-            console.error("Giriş hatası:", error);
-            alert("Giriş yapılamadı: " + error.message);
-        }
+    // Giriş
+    document.getElementById('login-btn').onclick = () => signInWithPopup(auth, provider);
+    document.getElementById('logout-btn').onclick = () => signOut(auth).then(() => location.reload());
+
+    // Otomatik Net Hesaplama (JavaScript)
+    window.calcNet = () => {
+        let d = parseFloat(document.getElementById('correct').value) || 0;
+        let y = parseFloat(document.getElementById('wrong').value) || 0;
+        let net = d - (y * 0.25);
+        document.getElementById('net-result').innerText = "Net: " + net.toFixed(2);
     };
 
-    // Çıkış Butonu Tıklama
-    document.getElementById('logout-btn').onclick = () => {
-        signOut(auth).then(() => location.reload());
-    };
-
-    // Kullanıcı Durumunu İzle
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
-            checkUserRole(user);
-        } else {
-            showGuestView();
+            document.getElementById('login-btn').classList.add('hidden');
+            document.getElementById('logout-btn').classList.remove('hidden');
+            const docSnap = await getDoc(doc(db, "users", user.uid));
+            if (docSnap.exists()) {
+                let role = docSnap.data().role;
+                document.getElementById('user-name').innerText = "Merhaba, " + user.displayName;
+                if(role === 'student') document.getElementById('student-panel').classList.remove('hidden');
+                else document.getElementById('teacher-panel').classList.remove('hidden');
+            } else {
+                document.getElementById('role-modal').classList.remove('hidden');
+            }
         }
     });
 
-    async function checkUserRole(user) {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (userSnap.exists()) {
-            const role = userSnap.data().role;
-            showDashboard(user.displayName, role);
-        } else {
-            document.getElementById('role-modal').classList.remove('hidden');
-        }
-    }
-
-    // Rolü Veritabanına Kaydet
-    window.setRole = async (selectedRole) => {
-        const user = auth.currentUser;
-        if (!user) return;
-
-        try {
-            await setDoc(doc(db, "users", user.uid), {
-                name: user.displayName,
-                email: user.email,
-                role: selectedRole,
-                createdAt: new Date()
-            });
-            document.getElementById('role-modal').classList.add('hidden');
-            showDashboard(user.displayName, selectedRole);
-        } catch (error) {
-            alert("Kayıt sırasında hata oluştu!");
-        }
+    window.saveRole = async (role) => {
+        await setDoc(doc(db, "users", auth.currentUser.uid), {
+            name: auth.currentUser.displayName,
+            role: role
+        });
+        location.reload();
     };
 
-    function showDashboard(name, role) {
-        document.getElementById('user-greeting').innerText = `Merhaba, ${name}! 👋`;
-        document.getElementById('sub-text').innerText = `${role === 'student' ? 'Öğrenci' : 'Öğretmen'} paneline hoş geldin.`;
-        document.getElementById('login-btn').classList.add('hidden');
-        document.getElementById('logout-btn').classList.remove('hidden');
-        document.getElementById('guest-view').classList.add('hidden');
-        
-        if (role === 'student') {
-            document.getElementById('student-panel').classList.remove('hidden');
-            document.getElementById('teacher-panel').classList.add('hidden');
-        } else {
-            document.getElementById('teacher-panel').classList.remove('hidden');
-            document.getElementById('student-panel').classList.add('hidden');
-        }
-    }
-
-    function showGuestView() {
-        document.getElementById('login-btn').classList.remove('hidden');
-        document.getElementById('logout-btn').classList.add('hidden');
-        document.getElementById('guest-view').classList.remove('hidden');
-        document.getElementById('student-panel').classList.add('hidden');
-        document.getElementById('teacher-panel').classList.add('hidden');
-    }
+    // Veri Kaydetme Fonksiyonu
+    window.saveData = async () => {
+        let d = document.getElementById('correct').value;
+        let y = document.getElementById('wrong').value;
+        let net = d - (y * 0.25);
+        await addDoc(collection(db, "daily_stats"), {
+            uid: auth.currentUser.uid,
+            lesson: document.getElementById('lesson').value,
+            correct: d,
+            wrong: y,
+            net: net,
+            date: new Date().toLocaleDateString()
+        });
+        alert("Başarıyla kaydedildi!");
+    };
 </script>
-
 </body>
 </html>
